@@ -2,6 +2,7 @@
 [![Travis Build][trav-img]][trav-url]
 [![Appveyor Build][appv-img]][appv-url]
 [![crates.io][crates-img]][crates-url]
+[![docs.rs][docs-rs-img]][docs-rs]
 
 [Join the Rust VST chat](https://tinyurl.com/ya5ff5ef) (for web users, make sure you're [registered/logged in](https://web.telegram.org))
 
@@ -88,6 +89,8 @@ crate-type = ["cdylib"]
 [appv-url]: https://ci.appveyor.com/project/rustdsp/rust-vst
 [crates-img]: https://img.shields.io/crates/v/vst.svg
 [crates-url]: https://crates.io/crates/vst
+[docs-rs]: https://docs.rs/vst
+[docs-rs-img]: https://docs.rs/vst/badge.svg
 
 #### Packaging on OS X
 
