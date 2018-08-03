@@ -101,5 +101,12 @@ Example: 
 Creates a Plugin.vst bundle
 ```
 
+## Development
+
+Run `make setup` to install the required tools, e.g. `rustup`, `clippy` for linting and `rustfmt` to ensure a consistent code style.
+
+The `Makefile` provides—besides some common targets like `build`, `test` and `clean`—a `check` target that runs the linter and also checks the code style.
+You can run `make fmt` if you editor doesn't format the code automatically.
+
 ## Special Thanks
 [Marko Mijalkovic](https://github.com/overdrivenpotato) for [initiating this project](https://github.com/overdrivenpotato/rust-vst2)
