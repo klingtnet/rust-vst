@@ -1,28 +1,39 @@
 #!/bin/bash
 
-# Make sure we have the arguments we need
-if [[ -z $1 || -z $2 ]]; then
-    echo "Generates a macOS bundle from a compiled dylib file"
-    echo "Example:"
-    echo -e "\t$0 Plugin target/release/plugin.dylib"
-    echo -e "\tCreates a Plugin.vst bundle"
-else
-    # Make the bundle folder
-    mkdir -p "$1.vst/Contents/MacOS"
+PLUGIN=$1
+DYLIB_PATH=$2
 
-    # Create the PkgInfo
-    echo "BNDL????" > "$1.vst/Contents/PkgInfo"
+usage() {
+    cat <<HEREDOC
+Generates a macOS bundle from a compiled dylib file
 
-    #build the Info.Plist
-    echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
-<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
-<plist version=\"1.0\">
+Usage:
+    $0 plugin-name path/to/plugin.dylib
+HEREDOC
+    exit 1
+}
+
+[[ -z ${PLUGIN} || -z ${DYLIB_PATH} ]] && usage
+
+set -euo pipefail
+
+# Make the bundle folder
+mkdir -p "${PLUGIN}.vst/Contents/MacOS"
+
+# Create the PkgInfo
+echo "BNDL????" > "${PLUGIN}.vst/Contents/PkgInfo"
+
+#build the Info.Plist
+cat <<HEREDOC> "${PLUGIN}.vst/Contents/Info.plist"
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
 <dict>
     <key>CFBundleDevelopmentRegion</key>
     <string>English</string>
 
     <key>CFBundleExecutable</key>
-    <string>$1</string>
+    <string>${PLUGIN}</string>
 
     <key>CFBundleGetInfoString</key>
     <string>vst</string>
@@ -31,13 +42,13 @@ else
     <string></string>
 
     <key>CFBundleIdentifier</key>
-    <string>com.rust-vst.$1</string>
+    <string>com.rust-vst.${PLUGIN}</string>
 
     <key>CFBundleInfoDictionaryVersion</key>
     <string>6.0</string>
 
     <key>CFBundleName</key>
-    <string>$1</string>
+    <string>${PLUGIN}</string>
 
     <key>CFBundlePackageType</key>
     <string>BNDL</string>
@@ -52,10 +63,10 @@ else
     <string></string>
 
 </dict>
-</plist>" > "$1.vst/Contents/Info.plist"
+</plist>
+HEREDOC
 
-    # move the provided library to the correct location
-    cp "$2" "$1.vst/Contents/MacOS/$1"
+# move the provided library to the correct location
+cp "${DYLIB_PATH}" "${PLUGIN}.vst/Contents/MacOS/${PLUGIN}"
 
-    echo "Created bundle $1.vst"
-fi
+echo "Created bundle ${PLUGIN}.vst"
