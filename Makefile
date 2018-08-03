@@ -20,6 +20,11 @@ build: target/release/libvst.rlib
 target/release/libvst.rlib: $(RUST_SRC)
 	@cargo build --release
 
+doc: target/doc/vst/index.html
+
+target/doc/vst/index.html: $(RUST_SRC)
+	@cargo doc
+
 lint: $(RUST_SRC)
 	@cargo +nightly clippy
 
