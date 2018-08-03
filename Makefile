@@ -1,4 +1,5 @@
 RUST_SRC:=$(wildcard **/*.rs)
+RUSTUP:=$(shell which rustup || echo)
 
 all: build
 
@@ -6,6 +7,13 @@ test: check
 	@cargo test
 
 check: fmt-check lint
+
+setup:
+ifeq ($(RUSTUP),)
+	curl https://sh.rustup.rs -sSf | sh
+endif
+	@$(RUSTUP) toolchain install nightly
+	@$(RUSTUP) component add --toolchain=nightly clippy-preview rustfmt-preview
 
 build: target/release/libvst.rlib
 
